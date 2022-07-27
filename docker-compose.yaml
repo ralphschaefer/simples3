@@ -1,0 +1,50 @@
+version: "3.7"
+
+services:
+  s3service:
+    container_name: s3service
+    hostname: s3service
+    image: zenko/cloudserver:8.2.7
+    restart: unless-stopped
+    volumes:
+      - data:/usr/src/app/localData
+      - metadata:/usr/src/app/localMetadata
+      - ./cloudserver/authdata.json:/usr/src/app/conf/authdata.json
+    environment:
+      S3BACKEND: file
+      REMOTE_MANAGEMENT_DISABLE: 1
+      LOG_LEVEL: debug
+      SSL: "false"
+      LISTEN_ADDR: 0.0.0.0
+    networks:
+      deployment:
+        ipv4_address: 172.173.100.1
+  s3manager:
+    container_name: s3manger
+    hostname: s3manager
+    image: mastertinner/s3manager
+    ports:
+      - 8080:8080
+    environment:
+      - ENDPOINT=172.173.100.1:8000
+      - ACCESS_KEY_ID=access
+      - SECRET_ACCESS_KEY=secret
+      - USE_SSL=false
+    depends_on:
+      - s3service
+    networks:
+      deployment:
+        ipv4_address: 172.173.100.2
+
+volumes:
+  data:
+  metadata:
+
+networks:
+  deployment:
+    driver: bridge
+    internal: false
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.173.0.0/16
