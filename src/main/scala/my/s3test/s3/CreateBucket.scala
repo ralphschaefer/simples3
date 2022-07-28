@@ -9,8 +9,7 @@ class CreateBucket(client: AmazonS3Client) {
 
   def buckets: Try[Seq[String]] =
     Try(client.listBuckets())
-      .map(_.asScala)
-      .map(_.toSeq.map(_.getName))
+      .map(_.asScala.toSeq.map(_.getName))
 
   def create(name:String) = for {
     hasBucket <- buckets.map(_.contains(name))

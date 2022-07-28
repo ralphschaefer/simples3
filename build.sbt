@@ -15,7 +15,8 @@ lazy val root = (project in file("."))
       "com.github.pureconfig" %% "pureconfig" % "0.17.1",
       "com.amazonaws" % "aws-java-sdk-s3" % "1.12.239",
       // "com.amazonaws" % "aws-java-sdk" % "1.12.239",
-      "com.github.javafaker" % "javafaker" % "1.0.2"
+      "com.github.javafaker" % "javafaker" % "1.0.2",
+      "javax.xml.bind" % "jaxb-api" % "2.3.1"
     ),
     assembly / assemblyOutputPath := new File(target.value + "/" + name.value + ".jar"),
     assembly / assemblyMergeStrategy := {

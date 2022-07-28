@@ -23,7 +23,7 @@ object Main extends App with StrictLogging {
   val buckets: Try[Seq[Bucket]] = (for {
     client <- login.s3client
     b <- Try(client.listBuckets())
-  } yield b).map(_.asScala).map(_.toSeq)
+  } yield b).map(_.asScala.toSeq)
 
   buckets match {
     case Success(b) =>
